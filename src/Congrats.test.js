@@ -1,14 +1,14 @@
 import React from 'react'
-import Enzyme, { shallow } from 'enzyme'
+import { shallow } from 'enzyme'
 import EnzymeAdapter from 'enzyme-adapter-react-16'
 
-import { findTestByAttr } from '../test/testUtils'
+import { findTestByAttr, checkProps } from '../test/testUtils'
 import Congrats from './Congrats'
 
-Enzyme.configure({ adapter: new EnzymeAdapter })
-
+const defaultProps = { success: false }
 function setup(props = {}) {
-  return shallow(<Congrats {...props}/>)
+  const setupProps = {...defaultProps, ...props}
+  return shallow(<Congrats {...setupProps}/>)
 }
 
 it('should render without err', () => {
@@ -27,4 +27,8 @@ it('renders text when setup prop is true', () => {
   const wrapper = setup({ success: true })
   const component = findTestByAttr(wrapper, 'component-congrats')
   expect(component.text().length).not.toBe('')
+})
+
+it('doesnt throw any errors with expected prop type', () => {
+  checkProps(Congrats, { success: false })
 })
